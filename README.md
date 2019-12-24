@@ -1,5 +1,5 @@
 # AutoChrome
-Web bot written in Java based on Chromium (JCEF)
+Web bot written in Java based on JCEF based on CEF, a wrapper for Chromium.
 
 ## Installation
 1. Clone the repository to your IDE of choice (IntelliJ recommended!)
