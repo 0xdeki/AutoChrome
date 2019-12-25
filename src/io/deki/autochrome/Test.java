@@ -32,6 +32,8 @@ import java.awt.event.*;
 public class Test extends JFrame {
 
     private final JTextField address_;
+    private final JTextArea inputJs_;
+    private final JButton executeJs_;
     private final CefApp cefApp_;
     private final CefClient client_;
     private final CefBrowser browser_;
@@ -104,6 +106,19 @@ public class Test extends JFrame {
         //     If this happens, the entered value is passed to the CefBrowser
         //     instance to be loaded as URL.
         address_ = new JTextField(startURL, 100);
+        inputJs_ = new JTextArea(4, 50);
+        executeJs_ = new JButton("Execute javascript");
+
+        executeJs_.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String toExecute = inputJs_.getText();
+                System.out.println("Executing " + toExecute);
+                browser_.executeJavaScript(toExecute, "", 0);
+                inputJs_.setText("");
+            }
+        });
+
         address_.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -150,6 +165,10 @@ public class Test extends JFrame {
         //     JFrame and afterwards the frame is made visible to the user.
         getContentPane().add(address_, BorderLayout.NORTH);
         getContentPane().add(browerUI_, BorderLayout.CENTER);
+        JPanel jsPane = new JPanel(new BorderLayout());
+        jsPane.add(new JScrollPane(inputJs_), BorderLayout.CENTER);
+        jsPane.add(executeJs_, BorderLayout.EAST);
+        getContentPane().add(jsPane, BorderLayout.SOUTH);
         pack();
         setSize(800, 600);
         setVisible(true);
