@@ -14,7 +14,10 @@ libcef.dll from [here](https://github.com/0xdeki/AutoChrome/releases/download/li
 2. Place libcef.dll in /lib/win64 
 3. Build!
 
+## Making scripts
+To make scripts simply add classes to the scripts module and package the artifact with the premade configuration (scripts.jar). If you want to do so in a different project or IDE, import client.jar as a library. Put the packaged scripts jar in the same path as the client jar.
+
 ## Packaging/running
-1. Package the artifact with the premade configuration
+1. Package the artifact with the premade configuration (client.jar)
 2. Copy /lib/win64 to the path of the jar file
-3. Run with `java -jar -Djava.library.path=./win64 AutoChrome.jar`
+3. Run with `java -jar -Djava.library.path=./win64 client.jar`
