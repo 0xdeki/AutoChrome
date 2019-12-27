@@ -26,6 +26,7 @@ public class ScriptLoader {
         String path = new File(".").getAbsolutePath();
         List<URL> urls = getResourceFiles(path.substring(0, path.length() - 1));
         for (URL i : urls) {
+            if (!i.getPath().contains("scripts.jar")) continue;
             scripts.addAll(load(i.getPath().replace("file:", "")
                     .replace("!/", "")
                     .replace("/", "")));
