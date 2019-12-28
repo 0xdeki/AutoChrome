@@ -16,6 +16,7 @@ public class BrowserJSDialogListener implements CefJSDialogHandler {
     public boolean onJSDialog(CefBrowser browser, String url, JSDialogType type, String text, String s2, CefJSDialogCallback callback, BoolRef suppress) {
         if (type.equals(JSDialogType.JSDIALOGTYPE_PROMPT) && text.startsWith("AutoChrome ")) {
             String message = text.substring(text.indexOf("AutoChrome ") + 11);
+            if (!message.contains(" ")) return false;
             String id = message.split(" ")[0];
             String value = message.substring(message.indexOf(" ") + 1);
             JSVariableBridge.onVariable(id, value);
