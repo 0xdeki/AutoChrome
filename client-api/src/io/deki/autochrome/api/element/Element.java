@@ -93,7 +93,7 @@ public class Element {
     }
 
     public String getId() {
-        return getName() + getIndex() + getElementType().name();
+        return getName().replaceAll(" ", "^") + getIndex() + getElementType().name();
     }
 
     public String getName() {

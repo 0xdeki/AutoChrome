@@ -21,7 +21,7 @@ public class Example extends Script {
         if (Client.getUrl().contains("AutoChrome")) {
             return 1000;
         }
-        Element searchBar = new Element("header-search-input", Element.ElementType.CLASS_NAME, 0);
+        Element searchBar = new Element("input-sm header-search-input", Element.ElementType.CLASS_NAME, 0);
         if (searchBar.isDefined()) {
             searchBar.setValue("AutoChrome");
         }
