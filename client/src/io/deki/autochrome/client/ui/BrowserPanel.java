@@ -96,7 +96,7 @@ public class BrowserPanel extends JPanel {
 
         getClient().addJSDialogHandler(new BrowserJSDialogListener());
         getParent().getAddress().addActionListener(e -> {
-            if (getParent().getAddress().getText().startsWith("https")) {
+            if (getParent().getAddress().getText().startsWith("http")) {
                 getBrowser().loadURL(getParent().getAddress().getText());
             } else {
                 getBrowser().loadURL("https://www.google.com/search?q=" + getParent().getAddress().getText());
