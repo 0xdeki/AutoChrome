@@ -5,6 +5,8 @@ Web bot written in Java based on JCEF, based on CEF, a wrapper for Chromium.
 Currently running Chromium 78.
 
 ## Requirements
+[IntelliJ IDEA](https://www.jetbrains.com/idea/) (preferrably)
+
 Java JDK 8+
 
 libcef.dll from [here](https://github.com/0xdeki/AutoChrome/releases/download/libcef78/libcef.dll)
