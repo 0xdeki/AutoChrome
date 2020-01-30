@@ -39,6 +39,22 @@ public class Element {
         callMethod("click");
     }
 
+    public void focus() {
+        triggerEvent("focus");
+    }
+
+    public void typeText(String text) {
+        for (char c : text.toCharArray()) {
+            typeKey(c);
+            Time.sleep(20, 50);
+        }
+    }
+
+    public void typeKey(char key) {
+        String code = getElementCall() + ".dispatchEvent(new KeyboardEvent('keypress', {'key':'" + key + "'}));";
+        Client.execute(code);
+    }
+
     public void setValue(Object value) {
         String code = getElementCall() + ".value = '" + value.toString() + "';";
         Client.execute(code);
@@ -72,8 +88,14 @@ public class Element {
             case NAME: return String.format("document.getElementsByName('%s')[%s]", getName(), getIndex());
             case CLASS_NAME: return String.format("document.getElementsByClassName('%s')[%s]", getName(), getIndex());
             case TAG_NAME: return String.format("document.getElementsByTagName('%s')[%s]", getName(), getIndex());
+            case QUERY: return String.format("document.querySelectorAll('%s')[%s]", getName(), getIndex());
+            case PARENT: return getName();
         }
         return null;
+    }
+
+    public Element getParent() {
+        return new Element(getElementCall() + ".parentNode", ElementType.PARENT);
     }
 
     public String wrapInPrompt(String code) {
@@ -112,7 +134,9 @@ public class Element {
         ID,
         NAME,
         CLASS_NAME,
-        TAG_NAME
+        TAG_NAME,
+        QUERY,
+        PARENT
     }
 
 }

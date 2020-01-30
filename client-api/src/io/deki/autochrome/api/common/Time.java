@@ -1,5 +1,6 @@
 package io.deki.autochrome.api.common;
 
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BooleanSupplier;
 
 /**
@@ -14,6 +15,10 @@ public class Time {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void sleep(int min, int max) {
+        sleep(ThreadLocalRandom.current().nextInt(min, max));
     }
 
     public static boolean waitFor(BooleanSupplier supplier, int timeout, int delay) {
