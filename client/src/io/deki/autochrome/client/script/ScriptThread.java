@@ -30,15 +30,22 @@ public class ScriptThread extends Thread {
     @Override
     public void run() {
         while (!controlPanel.getStart().isEnabled()) {
-            if (controlPanel.getPause().getText().equals("Resume")) {
-                Time.sleep(1000);
-                continue;
+            try {
+                if (controlPanel.getPause().getText().equals("Resume")) {
+                    Time.sleep(1000);
+                    continue;
+                }
+                if (!started) {
+                    started = script.start();
+                    continue;
+                }
+                if (script.isStopping()) {
+                    return;
+                }
+                Time.sleep(script.loop());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            if (!started) {
-                started = script.start();
-                continue;
-            }
-            Time.sleep(script.loop());
         }
     }
 

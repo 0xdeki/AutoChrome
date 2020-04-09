@@ -17,7 +17,7 @@ public class Element {
     private int index;
 
     public Element(String name, ElementType type, int index) {
-        this.name = name;
+        this.name = name.replaceAll("'", "\"");
         this.type = type;
         this.index = index;
     }
@@ -98,6 +98,10 @@ public class Element {
         return new Element(getElementCall() + ".parentNode", ElementType.PARENT);
     }
 
+    public Element getChild(int index) {
+        return new Element(getElementCall() + ".childNodes[" + index + "]", ElementType.PARENT);
+    }
+
     public String wrapInPrompt(String code) {
         return String.format("prompt('AutoChrome %s ' + (%s))", getId(), code);
     }
@@ -115,7 +119,7 @@ public class Element {
     }
 
     public String getId() {
-        return getName().replaceAll(" ", "^") + getIndex() + getElementType().name();
+        return getName().replaceAll(" ", "^").replaceAll("'", "^") + getIndex() + getElementType().name();
     }
 
     public String getName() {

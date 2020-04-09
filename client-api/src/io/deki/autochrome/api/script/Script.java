@@ -6,10 +6,19 @@ package io.deki.autochrome.api.script;
  **/
 public abstract class Script {
 
+    private boolean stopping = false;
+
     public boolean start() {
         return true;
     }
 
     public abstract int loop();
 
+    public boolean isStopping() {
+        return stopping;
+    }
+
+    public void setStopping(boolean stopping) {
+        this.stopping = stopping;
+    }
 }
