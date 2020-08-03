@@ -35,6 +35,7 @@ public class ScriptFrame extends JFrame {
             };
         }
         scripts = new JTable(data, titles);
+        scripts.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         start = new JButton("Start");
         start.addActionListener(e -> {

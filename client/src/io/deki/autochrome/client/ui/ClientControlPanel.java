@@ -55,7 +55,9 @@ public class ClientControlPanel extends JPanel {
     }
 
     public void launchScript(ScriptFrame frame, ScriptEntry script) {
-        frame.dispose();
+        if (frame != null) {
+            frame.dispose();
+        }
         ScriptThread thread = new ScriptThread(this, script);
         start.setEnabled(false);
         pause.setEnabled(true);

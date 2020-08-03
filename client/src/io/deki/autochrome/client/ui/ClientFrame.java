@@ -48,12 +48,17 @@ public class ClientFrame extends JFrame {
         glassPane.setVisible(true);
 
         setContentPane(root);
+        setJMenuBar(new ClientMenu(this));
         setTitle("AutoChrome");
         pack();
     }
 
     public BrowserPanel getBrowserPanel() {
         return browserPanel;
+    }
+
+    public ClientControlPanel getControlPanel() {
+        return controlPanel;
     }
 
     public JTextField getAddress() {
