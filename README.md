@@ -13,8 +13,11 @@ libcef.dll from [here](https://github.com/0xdeki/AutoChrome/releases/download/li
 
 ## Command line arguments
 *-script scriptName*: Start a script immediately when the client loads
+
 *-proxy ip:port*: Load the client with a proxy
+
 *-proxyUsername username*: Set a username to authenticate the proxy
+
 *-proxyPassword password*: Set a password to authenticate the proxy
 
 ## Installation
