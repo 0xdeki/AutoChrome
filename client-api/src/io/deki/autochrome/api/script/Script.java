@@ -17,6 +17,10 @@ public abstract class Script {
 
     public abstract int loop();
 
+    public void onStart(String[] args) {
+
+    }
+
     public boolean isStopping() {
         return stopping;
     }

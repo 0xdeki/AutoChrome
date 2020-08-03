@@ -5,21 +5,12 @@ import io.deki.autochrome.client.script.ScriptLoader;
 import io.deki.autochrome.client.ui.ClientFrame;
 import io.deki.autochrome.client.wrapper.ProxyAuthenticationWrapper;
 import org.cef.CefApp;
-import org.cef.browser.CefBrowser;
-import org.cef.browser.CefFrame;
-import org.cef.callback.CefAuthCallback;
 import org.cef.callback.CefCommandLine;
-import org.cef.callback.CefRequestCallback;
 import org.cef.handler.CefAppHandlerAdapter;
-import org.cef.handler.CefLoadHandler;
-import org.cef.handler.CefRequestHandler;
-import org.cef.handler.CefResourceRequestHandler;
-import org.cef.misc.BoolRef;
-import org.cef.network.CefRequest;
 
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
-import java.net.Proxy;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +20,8 @@ import java.util.List;
 public class Boot {
 
     private static String quickstartScript, proxy, proxyUsername, proxyPassword;
+
+    private static List<String> quickstartArgs = new ArrayList<>();
 
     public static void main(String[] args) {
         CefApp.addAppHandler(new CefAppHandlerAdapter(null) {
@@ -64,12 +57,24 @@ public class Boot {
             ScriptLoader loader = new ScriptLoader();
             List<ScriptEntry> scriptEntries = loader.loadAll();
             scriptEntries.stream().filter(x -> x.getManifest().name().equalsIgnoreCase(quickstartScript))
-                    .findFirst().ifPresent(script -> client.getControlPanel().launchScript(null, script));
+                    .findFirst().ifPresent(script -> {
+                        if (quickstartArgs.size() > 0) {
+                            String[] scriptArgs = new String[quickstartArgs.size()];
+                            quickstartArgs.toArray(scriptArgs);
+                            client.getControlPanel().launchScript(null, script, scriptArgs);
+                        } else {
+                            client.getControlPanel().launchScript(null, script);
+                        }
+            });
         }
     }
 
     public static void handleArgs(String[] args) {
+        boolean funnelToScript = false;
         for (int i = 0; i < args.length; i++) {
+            if (funnelToScript) {
+                quickstartArgs.add(args[i]);
+            }
             if (args[i].equalsIgnoreCase("-script")) {
                 quickstartScript = args[i + 1];
             }
@@ -81,6 +86,9 @@ public class Boot {
             }
             if (args[i].equalsIgnoreCase("-proxyPassword")) {
                 proxyPassword = args[i + 1];
+            }
+            if (args[i].equalsIgnoreCase("-args")) {
+                funnelToScript = true;
             }
         }
     }

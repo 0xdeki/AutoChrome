@@ -13,7 +13,6 @@ public class JSVariableBridge {
     public static Map<String, Element> elementQueue = Collections.synchronizedMap(new HashMap<>());
 
     public static void onVariable(String id, String value) {
-        System.out.println(id + ": " + value);
         Element element = elementQueue.getOrDefault(id, null);
         if (element == null) return;
         element.onJavaScriptValue(value);

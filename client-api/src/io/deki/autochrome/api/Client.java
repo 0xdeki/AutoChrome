@@ -1,17 +1,23 @@
 package io.deki.autochrome.api;
 
+import io.deki.autochrome.api.callback.BrowserCallback;
+import io.deki.autochrome.api.common.Time;
 import org.cef.CefApp;
 import org.cef.CefClient;
 import org.cef.CefSettings;
 import org.cef.browser.CefBrowser;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Endre on 27.12.2019
  * @project AutoChrome
  **/
 public class Client {
+
+    private static List<BrowserCallback> browserCallbacks = new ArrayList<>();
 
     private static CefApp instance;
 
@@ -23,16 +29,28 @@ public class Client {
 
     private static Component component;
 
-    public static void init(CefApp instance, CefSettings settings, CefClient client, CefBrowser browser, Component component) {
+    public static void init(CefApp instance, CefSettings settings, CefClient client) {
         Client.instance = instance;
         Client.settings = settings;
         Client.client = client;
-        Client.browser = browser;
-        Client.component = component;
+
+        browser = client.createBrowser("https://google.com", false, false);
+        component = browser.getUIComponent();
+
+        for (BrowserCallback browserCallback : browserCallbacks) {
+            browserCallback.onBrowserChanged(browser);
+        }
+    }
+
+    public static void register(BrowserCallback callback) {
+        browserCallbacks.add(callback);
+    }
+
+    public static void exit() {
+        CefApp.getInstance().dispose();
     }
 
     public static void execute(String javaScript) {
-        System.out.println("Executing: " + javaScript);
         getBrowser().executeJavaScript(javaScript, "", 0);
     }
 

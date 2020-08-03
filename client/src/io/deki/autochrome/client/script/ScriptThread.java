@@ -49,4 +49,7 @@ public class ScriptThread extends Thread {
         }
     }
 
+    public Script getScript() {
+        return script;
+    }
 }

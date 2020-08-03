@@ -1,6 +1,7 @@
 package io.deki.autochrome.client.ui;
 
 import io.deki.autochrome.api.Client;
+import io.deki.autochrome.api.callback.BrowserCallback;
 import io.deki.autochrome.api.listeners.BrowserJSDialogListener;
 import io.deki.autochrome.api.listeners.BrowserMouseListener;
 import org.cef.CefApp;
@@ -19,11 +20,9 @@ import java.awt.event.FocusEvent;
  * @author Endre on 27.12.2019
  * @project AutoChrome
  **/
-public class BrowserPanel extends JPanel {
+public class BrowserPanel extends JPanel implements BrowserCallback {
 
     private ClientFrame parent;
-
-    private boolean offScreenRendering;
 
     private boolean focused;
 
@@ -45,12 +44,22 @@ public class BrowserPanel extends JPanel {
     public void init() {
         //create the browser, settings can only be passed once
         settings = new CefSettings();
-        settings.windowless_rendering_enabled = offScreenRendering;
+        settings.windowless_rendering_enabled = false;
         instance = CefApp.getInstance(settings);
-
         client = instance.createClient();
 
-        browser = client.createBrowser("https://google.com", offScreenRendering, false);
+        //init api
+        Client.register(this);
+        Client.init(instance, settings, client);
+    }
+
+    @Override
+    public void onBrowserChanged(CefBrowser cefBrowser) {
+        if (browserUI != null) {
+            remove(browserUI);
+        }
+
+        browser = cefBrowser;
         browserUI = browser.getUIComponent();
 
         //add handlers
@@ -103,9 +112,6 @@ public class BrowserPanel extends JPanel {
             }
         });
 
-        //init api
-        Client.init(instance, settings, client, browser, browserUI);
-
         add(browserUI, BorderLayout.CENTER);
 
         BrowserMouseListener mouseListener = new BrowserMouseListener();
@@ -135,7 +141,4 @@ public class BrowserPanel extends JPanel {
         return focused;
     }
 
-    public void setOffScreenRendering(boolean offScreenRendering) {
-        this.offScreenRendering = offScreenRendering;
-    }
 }

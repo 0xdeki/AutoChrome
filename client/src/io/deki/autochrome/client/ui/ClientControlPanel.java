@@ -55,6 +55,10 @@ public class ClientControlPanel extends JPanel {
     }
 
     public void launchScript(ScriptFrame frame, ScriptEntry script) {
+        launchScript(frame, script, null);
+    }
+
+    public void launchScript(ScriptFrame frame, ScriptEntry script, String[] args) {
         if (frame != null) {
             frame.dispose();
         }
@@ -62,6 +66,9 @@ public class ClientControlPanel extends JPanel {
         start.setEnabled(false);
         pause.setEnabled(true);
         stop.setEnabled(true);
+        if (args != null) {
+            thread.getScript().onStart(args);
+        }
         Executors.newSingleThreadExecutor().execute(thread);
     }
 
