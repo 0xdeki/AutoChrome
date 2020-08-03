@@ -3,12 +3,23 @@ package io.deki.autochrome.client;
 import io.deki.autochrome.client.script.ScriptEntry;
 import io.deki.autochrome.client.script.ScriptLoader;
 import io.deki.autochrome.client.ui.ClientFrame;
+import io.deki.autochrome.client.wrapper.ProxyAuthenticationWrapper;
 import org.cef.CefApp;
+import org.cef.browser.CefBrowser;
+import org.cef.browser.CefFrame;
+import org.cef.callback.CefAuthCallback;
 import org.cef.callback.CefCommandLine;
+import org.cef.callback.CefRequestCallback;
 import org.cef.handler.CefAppHandlerAdapter;
+import org.cef.handler.CefLoadHandler;
+import org.cef.handler.CefRequestHandler;
+import org.cef.handler.CefResourceRequestHandler;
+import org.cef.misc.BoolRef;
+import org.cef.network.CefRequest;
 
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
+import java.net.Proxy;
 import java.util.List;
 
 /**
@@ -17,7 +28,7 @@ import java.util.List;
  **/
 public class Boot {
 
-    private static String quickstartScript, proxy;
+    private static String quickstartScript, proxy, proxyUsername, proxyPassword;
 
     public static void main(String[] args) {
         CefApp.addAppHandler(new CefAppHandlerAdapter(null) {
@@ -45,6 +56,10 @@ public class Boot {
         client.setLocationRelativeTo(null);
         client.setVisible(true);
 
+        if (proxyUsername != null && proxyPassword != null) {
+            client.getBrowserPanel().getClient().addRequestHandler(new ProxyAuthenticationWrapper(proxyUsername, proxyPassword));
+        }
+
         if (quickstartScript != null) {
             ScriptLoader loader = new ScriptLoader();
             List<ScriptEntry> scriptEntries = loader.loadAll();
@@ -55,11 +70,17 @@ public class Boot {
 
     public static void handleArgs(String[] args) {
         for (int i = 0; i < args.length; i++) {
-            if (args[i].equals("-script")) {
+            if (args[i].equalsIgnoreCase("-script")) {
                 quickstartScript = args[i + 1];
             }
-            if (args[i].equals("-proxy")) {
+            if (args[i].equalsIgnoreCase("-proxy")) {
                 proxy = args[i + 1];
+            }
+            if (args[i].equalsIgnoreCase("-proxyUsername")) {
+                proxyUsername = args[i + 1];
+            }
+            if (args[i].equalsIgnoreCase("-proxyPassword")) {
+                proxyPassword = args[i + 1];
             }
         }
     }
