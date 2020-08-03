@@ -11,6 +11,12 @@ Java JDK 8+
 
 libcef.dll from [here](https://github.com/0xdeki/AutoChrome/releases/download/libcef78/libcef.dll)
 
+## Command line arguments
+*-script scriptName*: Start a script immediately when the client loads
+*-proxy ip:port*: Load the client with a proxy
+*-proxyUsername username*: Set a username to authenticate the proxy
+*-proxyPassword password*: Set a password to authenticate the proxy
+
 ## Installation
 1. Clone the repository to your IDE of choice (IntelliJ recommended!)
 2. Place libcef.dll in /lib/win64 
