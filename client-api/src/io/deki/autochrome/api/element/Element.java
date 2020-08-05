@@ -99,7 +99,7 @@ public class Element {
     }
 
     public Element getChild(int index) {
-        return new Element(getElementCall() + ".childNodes[" + index + "]", ElementType.PARENT);
+        return new Element(getElementCall() + ".children[" + index + "]", ElementType.PARENT);
     }
 
     public String wrapInPrompt(String code) {
