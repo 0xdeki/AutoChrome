@@ -23,13 +23,15 @@ public class ScriptLoader {
 
     public List<ScriptEntry> loadAll() {
         List<ScriptEntry> scripts = new ArrayList<>();
-        String path = new File(".").getAbsolutePath();
-        List<URL> urls = getResourceFiles(path.substring(0, path.length() - 1));
+        File folder = new File(File.separator + "autochrome-scripts");
+        if (!folder.isDirectory()) {
+            folder.mkdir();
+        }
+        String path = new File("autochrome-scripts" + File.separator).getAbsolutePath();
+        List<URL> urls = getResourceFiles(path);
         for (URL i : urls) {
-            if (i.getPath().contains("client.jar")) continue;
             scripts.addAll(load(i.getPath().replace("file:", "")
-                    .replace("!/", "")
-                    .replace("/", "")));
+                    .replace("!/", "")));
         }
         return scripts;
     }
